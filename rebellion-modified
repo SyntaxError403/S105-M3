@@ -22,7 +22,7 @@ patches-own [
 
 to increase-cops
   ; create cops
-  create-cops round (initial-cop-density * .02 * count patches) [
+  create-cops round (initial-cop-density * .01 * count patches) [
     move-to one-of patches with [ not any? turtles-here ]
     display-cop
   ]
@@ -67,7 +67,7 @@ to setup
     display-agent
   ]
 
-  increase-cops
+  ;increase-cops
   ; start clock and plot initial state of system
   reset-ticks
 end
@@ -88,6 +88,12 @@ to go
   ask cops [ display-cop ]
 
   set rebel-counter  count agents with [active?]
+
+
+  ; call in more cops if rebel numbers are getting too high
+  if rebel-counter / count agents * 100 > .005 and count cops < 448[
+  increase-cops
+  ]
 
   ; advance clock and update plots
   tick
